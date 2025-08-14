@@ -336,6 +336,33 @@
   }
   function stopConfetti(){ if(confettiAnim){ cancelAnimationFrame(confettiAnim); confettiAnim = null; } }
 
+  
+  // Felicitaciones modal handlers
+  function setupCongrats(){
+    const modal = document.getElementById('modalCongrats');
+    const btnClose = document.getElementById('closeCongrats');
+    const btnReset = document.getElementById('resetFromCongrats');
+
+    function closeModal(){
+      modal.classList.remove('open');
+      stopConfetti();
+    }
+    if(btnClose) btnClose.addEventListener('click', closeModal);
+    if(btnReset) btnReset.addEventListener('click', ()=>{
+      localStorage.removeItem(STATE_KEY);
+      state = { approvals:{}, auth:{} };
+      render(); updateProgress(); closeModal();
+    });
+    // Cerrar al hacer click en el fondo (no en la tarjeta)
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal){ closeModal(); }
+    });
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+  }
+
   // Menu & SW
   function setupMenu(){
     const menu = document.getElementById('menu');
@@ -348,7 +375,7 @@
   }
   if('serviceWorker' in navigator){ window.addEventListener('load', ()=> navigator.serviceWorker.register('./sw.js').catch(()=>{}) ); }
 
-  render(); setupMenu(); checkCompletion();
+  render(); setupMenu(); setupCongrats(); checkCompletion();
   </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE = 'podo-pwa-v1.0.0';
+const CACHE = 'podo-pwa-v1.0.1';
 const ASSETS = [
   './',
   './index.html',
